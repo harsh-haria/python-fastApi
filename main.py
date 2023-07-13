@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from utility.config import conn
 
+from models.studentDetails import StudentDetails
+
 app = FastAPI()
 
 @app.get('/')
@@ -17,3 +19,9 @@ async def fetchAll():
     print(studentData)
     print(type(studentData))
     return studentData
+
+@app.post('/insertStudent')
+async def addStudent(student: StudentDetails):
+    response = conn.LibraryManagementSystem.students.insert_one(student.dict())
+    print(response)
+    return {'message': 'Student added successfully!'}
